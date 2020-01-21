@@ -11,6 +11,20 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    springVersion = '5.2.3.RELEASE'
+}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile group: 'org.springframework', name: 'spring-context', version: '5.2.3.RELEASE'
+}
+
+jar {
+    from {
+        configurations.runtime.collect{zipTree(it)}
+    }
+    manifest {
+        attributes 'Main-Class': 'marshal.news.index.simple.Application'
+    }
 }
