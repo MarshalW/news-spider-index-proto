@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# 设置 DIR 为当前脚本文件的路径
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd "$DIR/../"
+
+java -jar ./build/libs/*.jar
