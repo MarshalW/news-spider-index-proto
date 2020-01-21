@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./spider/simple/bin/simple
+
