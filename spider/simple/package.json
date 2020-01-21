@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "lets-get-meta": "^2.1.1",
     "moment": "^2.24.0",
     "simplecrawler": "^1.1.8",
     "winston": "^3.2.1"
