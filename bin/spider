@@ -1,4 +1,5 @@
 #!/bin/bash
 
-./spider/simple/bin/simple
+mkdir -p logs
+./spider/simple/bin/simple > logs/news.log
 

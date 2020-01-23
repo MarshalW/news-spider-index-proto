@@ -9,7 +9,7 @@ import org.wltea.analyzer.core.Lexeme;
 
 import java.io.IOException;
 
-public class IKTokenizerAdapter extends Tokenizer {
+public class IKTokenizer extends Tokenizer {
     // IK分词器实现
     private IKSegmenter _IKImplement;
 
@@ -25,7 +25,7 @@ public class IKTokenizerAdapter extends Tokenizer {
     /**
      * @param useSmart
      */
-    public IKTokenizerAdapter(boolean useSmart) {
+    public IKTokenizer(boolean useSmart) {
         super();
         offsetAtt = addAttribute(OffsetAttribute.class);
         termAtt = addAttribute(CharTermAttribute.class);

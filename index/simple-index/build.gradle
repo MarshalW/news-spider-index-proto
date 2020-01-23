@@ -1,6 +1,21 @@
 plugins {
+//    id 'java-library'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'java'
 }
+
+//buildscript {
+//    repositories {
+//        jcenter()
+//    }
+//    dependencies {
+//        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+//    }
+//}
+//
+//apply plugin: 'com.github.johnrengelman.shadow'
+//apply plugin: 'java'
+
 
 group 'marshal.news.index.simple'
 version '0.1'
@@ -11,19 +26,64 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    springVersion = '5.2.3.RELEASE'
-}
-
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'org.springframework', name: 'spring-context', version: '5.2.3.RELEASE'
+    def springVersion = '5.2.3.RELEASE'
+    def luceneVersion = '8.4.0'
+    def jsonPathVersion = '2.4.0'
+    def ikVersion = '2012_u6'
+    def slf4jVersion = '1.7.30'
+    def ansjSegVersion = '5.1.6'
+    def ansjSegLuceneVersion = '5.1.5'
+
+    implementation "org.springframework:spring-context:${springVersion}"
+
+    implementation "org.apache.lucene:lucene-core:${luceneVersion}"
+    implementation "org.apache.lucene:lucene-queryparser:${luceneVersion}"
+    implementation "org.apache.lucene:lucene-analyzers-common:${luceneVersion}"
+//    implementation "org.apache.lucene:lucene-codecs:${luceneVersion}"
+
+    implementation "com.jayway.jsonpath:json-path:${jsonPathVersion}"
+    implementation "org.slf4j:slf4j-nop:${slf4jVersion}"
+
+    implementation("org.ansj:ansj_seg:${ansjSegVersion}") {
+        exclude group: 'org.apache.lucene', module: 'lucene-queryparser'
+        exclude group: 'org.apache.lucene', module: 'lucene-core'
+    }
+    implementation("org.ansj:ansj_lucene7_plug:${ansjSegLuceneVersion}") {
+        exclude group: 'org.apache.lucene', module: 'lucene-queryparser'
+        exclude group: 'org.apache.lucene', module: 'lucene-core'
+    }
+    implementation("com.janeluo:ikanalyzer:${ikVersion}") {
+        exclude group: 'org.apache.lucene', module: 'lucene-queryparser'
+        exclude group: 'org.apache.lucene', module: 'lucene-core'
+    }
 }
 
-jar {
-    from {
-        configurations.runtime.collect{zipTree(it)}
-    }
+//jar {
+//    from configurations.compileClasspath.collect { zipTree(it) }
+//
+//    manifest {
+//        attributes 'Main-Class': 'marshal.news.index.simple.Application'
+//    }
+//}
+
+//apply plugin: "com.github.johnrengelman.shadow"
+//
+//shadowJar {
+//    mergeServiceFiles()
+//}
+
+shadowJar {
+//    configurations = [project.configurations.compile]
+
+//    mergeServiceFiles {
+//        path = 'META-INF/services'
+//    }
+
+    append 'META-INF/services/org.apache.lucene.codecs.PostingsFormat'
+    append 'META-INF/services/org.apache.lucene.codecs.DocValuesFormat'
+    append 'META-INF/services/org.apache.lucene.codecs.Codec'
+
     manifest {
         attributes 'Main-Class': 'marshal.news.index.simple.Application'
     }

@@ -4,6 +4,7 @@ import cheerio from "cheerio"
 import _ from 'lodash'
 import getMeta from "lets-get-meta"
 import moment from 'moment'
+import htmlToText from 'html-to-text'
 
 export default class {
     constructor(params) {
@@ -16,12 +17,12 @@ export default class {
 
         if (news != null) {
             // logger.info(`Url: ${queueItem.url}\n Date: ${news.publishDate}, Title: ${news.title}\n Content: ${news.content}`)
+            let { url } = queueItem
+            let { contentId, title, content, publishDate } = news
+            content = htmlToText.fromString(news.content, { ignoreHref: true, ignoreImage: true, hideLinkHrefIfSameAsText: true })
             logger.info({
                 news: {
-                    url: queueItem.url,
-                    publishDate: news.publishDate,
-                    title: news.title,
-                    content: news.content
+                    contentId, title, content, publishDate, url
                 }
             })
         }

@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "html-to-text": "^5.1.1",
     "lets-get-meta": "^2.1.1",
     "moment": "^2.24.0",
     "simplecrawler": "^1.1.8",
