@@ -1,5 +1,29 @@
 # 全文检索简单实现
 
+## 构建
+
+需要先安装 gradle。
+
+命令：
+
+```$xslt
+gradle shadowjar
+```
+
+## 运行
+
+创建索引：
+
+```shell script
+./bin/index  ../../logs/news.log
+```
+
+执行搜索：
+
+```shell script
+./bin/search
+```
+
 ## 存在问题
 
 - `build.gradle` 需要做调整，有一些配置在后续 7.0 将不被支持
