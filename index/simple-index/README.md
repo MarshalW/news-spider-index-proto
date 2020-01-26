@@ -1,7 +1,6 @@
 # 全文检索简单实现
 
-## 构建
-
+## 构
 需要先安装 gradle。
 
 命令：
@@ -21,7 +20,7 @@ gradle shadowjar
 执行搜索：
 
 ```shell script
-./bin/search
+./bin/search 肺炎
 ```
 
 ## 存在问题

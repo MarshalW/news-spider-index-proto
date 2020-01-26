@@ -36,6 +36,9 @@ public class SearchServiceImpl implements SearchService {
         for (Analyzer analyzer : analyzerSet) {
             String className = analyzer.getClass().getName();
             Path indexPath = Paths.get("index-data/" + className);
+
+            System.out.println("==== " + className + " ====");
+
             try {
                 Directory directory = FSDirectory.open(indexPath);
 
@@ -51,7 +54,7 @@ public class SearchServiceImpl implements SearchService {
                 for (ScoreDoc d : docs.scoreDocs) {
                     Document document = searcher.doc(d.doc);
                     System.out.println("title: " + document.get("title"));
-                    System.out.println("content: \n ---------> \n" + document.get("content")+"\n <--------- ");
+                    System.out.println("content: \n ---------> \n" + document.get("content") + "\n <--------- ");
                     System.out.println("Score: " + d.score);
                     System.out.println("=========================== \n");
                 }
@@ -63,7 +66,7 @@ public class SearchServiceImpl implements SearchService {
                 throw new RuntimeException(e);
             }
 
-
+            System.out.println(">>>> " + className + " <<<< \n\n");
         }
 
 
