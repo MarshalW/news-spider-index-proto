@@ -1,25 +1,29 @@
 import Crawler from "simplecrawler"
 import logger from './logger.js'
-import cheerio from "cheerio"
-import _ from 'lodash'
-import getMeta from "lets-get-meta"
-import moment from 'moment'
 import htmlToText from 'html-to-text'
+import crypto from 'crypto'
+
+import History from './history.js'
+import parseNews from './parser.js'
+
+const USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
 
 export default class {
     constructor(params) {
-        let { url } = params
-
-        this.url = url
+        let { urls } = params
+        this.urls = urls
     }
     onFetchComplete(queueItem, responseBuffer, response) {
-        let news = this.parseNews(responseBuffer)
+        let news = parseNews(responseBuffer)
 
         if (news != null) {
-            // logger.info(`Url: ${queueItem.url}\n Date: ${news.publishDate}, Title: ${news.title}\n Content: ${news.content}`)
             let { url } = queueItem
             let { contentId, title, content, publishDate } = news
             content = htmlToText.fromString(news.content, { ignoreHref: true, ignoreImage: true, hideLinkHrefIfSameAsText: true })
+
+            news.url = url
+            this.saveNews(news)
+
             logger.info({
                 news: {
                     contentId, title, content, publishDate, url
@@ -32,61 +36,51 @@ export default class {
             status: `Spider finished.`
         })
     }
+    initHistory() {
+        this.history = new History()
+        this.history.init()
+    }
     start() {
-        this.spider = new Crawler(this.url)
-        this.spider.userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
-        this.spider.on('fetchcomplete', this.onFetchComplete.bind(this))
-        this.spider.on('complete', this.onComplete)
+        this.initHistory()
+        this.urls.forEach(url => {
+            let spider = new Crawler(url)
 
-        this.spider.start()
+            spider.userAgent = USER_AGENT
+            // spider.maxDepth = 2
+            // spider.cache = new Crawler.cache('./cache')
+
+            spider.on('fetchcomplete', this.onFetchComplete.bind(this))
+            spider.on('fetchcomplete', this.onFetchComplete.bind(this))
+            spider.on('complete', this.onComplete.bind(this))
+            spider.start()
+        })
+
         logger.info({
             status: `Spider started.`
         })
     }
-    parseNews(html) {
-        let $ = cheerio.load(html)
-        let meta = getMeta(html)
-        let news = {}
-        let titleSelectors = ['.articleTitle', '.artiTitle', '.artTitle']
+    saveNews(news) {
+        news.contentHash = crypto.createHash('md5').update(news.content).digest("hex")
+        let result = this.history.queryByUrl(news.url)
 
-        // 获取新闻题目
-        titleSelectors.forEach((item) => {
-            let title = _.trim($(item).text())
-            if (title.length > 0) {
-                if (title.indexOf('(') != -1) {
-                    title = title.substring(0, title.indexOf('('))
-                }
-                news.title = title
+        // 新的文章
+        if (result == null) {
+            this.history.insert(news)
+        } else {
+            let oldContentHash = result.content_hash
+
+            //新闻内容有更新，将设置旧记录废弃，并创建新记录
+            if (oldContentHash != news.contentHash) {
+                this.history.updateAbandoned(news.url, oldContentHash)
+                this.history.insert(news)
+                logger.info({
+                    modified: {
+                        url: news.url,
+                        oldContentHash,
+                        newContentHash: news.contentHash
+                    }
+                })
             }
-        })
-
-        // 获取新闻内容id
-        if (meta.contentid) {
-            news.contentId = meta.contentid
-        } else if ($('articleid')) {
-            news.contentId = $('articleid').text()
         }
-
-        // 获取发布日期
-        if (meta.publishdate) {
-            news.publishDate = moment(meta.publishdate, "YYYY-MM-DD").valueOf()
-        }
-
-        // 获取新闻内容
-        let contentStart = '<!--enpcontent-->'
-        let contentEnd = '<!--/enpcontent-->'
-        let htmlString = html.toString()
-        if (htmlString.includes(contentStart) && htmlString.includes(contentEnd)) {
-            let start = htmlString.indexOf(contentStart) + contentStart.length
-            let end = htmlString.indexOf(contentEnd)
-            news.content = htmlString.substring(start, end)
-        }
-
-        // 检查解析是否可用
-        if (news.contentId && news.title && news.publishDate && news.content) {
-            return news
-        }
-
-        return null
     }
 }

@@ -1,6 +1,9 @@
 import Spider from './lib/spider.js'
+import yaml from 'js-yaml'
+import fs from 'fs'
 
-new Spider({ url: 'http://news.china.com.cn/node_7247300.htm' }).start()
+const config = yaml.safeLoad(fs.readFileSync('../../config/spider.yml', 'utf8'))
+new Spider(config).start()
 
 
 

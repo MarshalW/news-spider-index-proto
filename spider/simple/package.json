@@ -6,13 +6,16 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app"
+    "start": "mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql && node app",
+    "sql": "mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "better-sqlite3": "^5.4.3",
     "cheerio": "^1.0.0-rc.3",
     "html-to-text": "^5.1.1",
+    "js-yaml": "^3.13.1",
     "lets-get-meta": "^2.1.1",
     "moment": "^2.24.0",
     "simplecrawler": "^1.1.8",
