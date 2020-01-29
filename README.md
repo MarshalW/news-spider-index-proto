@@ -2,6 +2,20 @@
 
 ## 命令执行
 
+### 安装和构建
+
+需要安装 gradle，在 maxOS下
+
+```
+brew install gradle
+```
+
+执行安装构建命令：
+
+```
+./bin/build
+```
+
 ### 爬虫生成日志
 
 配置文件，./config/spider.yml, 设置爬虫的入口，可以有多个 url
