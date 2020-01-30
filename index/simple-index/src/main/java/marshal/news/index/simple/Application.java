@@ -14,18 +14,18 @@ public class Application {
         String command = null;
 
         if (args.length > 1) {
-            command = args[1];
+            command = args[0];
 
             if (command.equals("index")) {
                 if (args.length > 1) {
-                    String filePath = args[2];
+                    String filePath = args[1];
                     index(filePath);
                 }
             }
 
             if (command.equals("search")) {
                 if (args.length > 1) {
-                    String keyword = args[2];
+                    String keyword = args[1];
                     search(keyword);
                 }
             }
