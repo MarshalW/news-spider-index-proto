@@ -1,5 +1,5 @@
 #!/bin/bash
 
 mkdir -p logs
-./spider/simple/bin/simple > logs/news.log
+nohup ./spider/simple/bin/simple > logs/news.log &
 

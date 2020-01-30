@@ -1,14 +1,44 @@
 # 新闻爬虫和索引服务原型
 
-## 命令执行
+## 要求
 
-### 安装和构建
+需要安装：
 
-需要安装 gradle，在 maxOS下
+- node.js v13.x
+- java SDK
+- gradle
+- sqlite3
+
+### gradle
+
+在 maxOS 下
 
 ```
 brew install gradle
 ```
+
+### linux 下编译问题的解决
+
+可能会出现这样的问题：
+
+```
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! integer@2.1.0 install: `node-gyp rebuild`
+..
+```
+
+这是因为 npm 自带的 `node-gyp` 版本不够新造成的。
+
+需要单独升级 node-gyp：
+
+```
+npm explore npm -g -- npm install node-gyp@latest
+```
+
+## 命令执行
+
+### 安装和构建
 
 执行安装构建命令：
 
