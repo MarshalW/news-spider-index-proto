@@ -12,6 +12,7 @@ export default class {
     constructor(params) {
         let { urls } = params
         this.urls = urls
+        this.spiderCount = 0
     }
     onFetchComplete(queueItem, responseBuffer, response) {
         let news = parseNews(responseBuffer)
@@ -46,13 +47,64 @@ export default class {
             let spider = new Crawler(url)
 
             spider.userAgent = USER_AGENT
-            // spider.maxDepth = 2
+            spider.maxConcurrency = 5
+            spider.timeout = 60 * 1000
+
+            spider.maxDepth = 2
             // spider.cache = new Crawler.cache('./cache')
 
             spider.on('fetchcomplete', this.onFetchComplete.bind(this))
-            spider.on('fetchcomplete', this.onFetchComplete.bind(this))
-            spider.on('complete', this.onComplete.bind(this))
+            spider.on('complete', () => {
+                logger.info({
+                    status: `A Spider finished.`
+                })
+                this.spiderCount--
+                if (this.spiderCount == 0) {
+                    logger.info({
+                        status: `Spider End.`
+                    })
+                    process.exit(0)
+                }
+            })
+
+            spider.on("fetchdataerror", function (queueItem) {
+                logger.error({
+                    error: {
+                        message: `fetchdataerror: ${queueItem.url}`
+                    }
+                })
+            })
+                .on("fetch404", function (queueItem, responseBuffer) {
+                    logger.error({
+                        error: {
+                            message: `fetch404: ${queueItem.url}`
+                        }
+                    })
+                })
+                .on("fetcherror", function (queueItem, responseBuffer) {
+                    logger.error({
+                        error: {
+                            message: `fetcherror: ${queueItem.url}`
+                        }
+                    })
+                })
+                .on("fetchtimeout", function (queueItem, timeoutVal) {
+                    logger.error({
+                        error: {
+                            message: `fetchtimeout: ${queueItem.url}`
+                        }
+                    })
+                })
+                .on("fetchredirect", function (queueItem, parsedUrl, response) {
+                    logger.info({
+                        redirect: {
+                            message: `redirect to: ${queueItem.url}`
+                        }
+                    })
+                })
+
             spider.start()
+            this.spiderCount
         })
 
         logger.info({
