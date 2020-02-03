@@ -48,8 +48,9 @@ export default class {
             let spider = new Crawler(url)
 
             spider.userAgent = USER_AGENT
-            spider.maxConcurrency = 5
+            spider.maxConcurrency = 2
             spider.timeout = 60 * 1000
+            spider.interval = 1 * 1000
 
             // spider.maxDepth = 5
             if (this.maxDepth) {
