@@ -51,7 +51,11 @@ export default class {
             spider.maxConcurrency = 5
             spider.timeout = 60 * 1000
 
-            spider.maxDepth = 5
+            // spider.maxDepth = 5
+            if (this.maxDepth) {
+                spider.maxDepth = this.maxDepth
+            }
+
             // spider.cache = new Crawler.cache('./cache')
 
             spider.on('fetchcomplete', this.onFetchComplete.bind(this))
