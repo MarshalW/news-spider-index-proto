@@ -10,8 +10,9 @@ const USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) Apple
 
 export default class {
     constructor(params) {
-        let { urls } = params
+        let { urls, maxDepth } = params
         this.urls = urls
+        this.maxDepth = maxDepth
         this.spiderCount = 0
     }
     onFetchComplete(queueItem, responseBuffer, response) {
@@ -50,7 +51,7 @@ export default class {
             spider.maxConcurrency = 5
             spider.timeout = 60 * 1000
 
-            spider.maxDepth = 2
+            spider.maxDepth = 5
             // spider.cache = new Crawler.cache('./cache')
 
             spider.on('fetchcomplete', this.onFetchComplete.bind(this))

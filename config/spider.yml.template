@@ -1,2 +1,3 @@
 urls:
   - http://news.my.com # 一个新闻入口
+maxDepth: 5 # 爬虫最大深度
