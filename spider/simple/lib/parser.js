@@ -2,7 +2,7 @@ import cheerio from "cheerio"
 import _ from 'lodash'
 import getMeta from "lets-get-meta"
 import moment from 'moment'
-import htmlToText from 'html-to-text'
+import logger from "./logger"
 
 export default function parse(html) {
     let $ = cheerio.load(html)

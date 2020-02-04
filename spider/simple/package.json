@@ -1,17 +1,17 @@
 {
   "name": "simple",
   "version": "0.0.1",
-  "type": "module",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql && node app",
+    "test": "rm -Rf ./db && mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql && mocha -r esm",
+    "start": "rm -Rf ./db && mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql && node -r esm app",
     "sql": "mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "esm": "^3.2.25",
     "better-sqlite3": "^5.4.3",
     "cheerio": "^1.0.0-rc.3",
     "html-to-text": "^5.1.1",
@@ -20,5 +20,9 @@
     "moment": "^2.24.0",
     "simplecrawler": "^1.1.8",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.1",
+    "mocha": "^7.0.1"
   }
 }

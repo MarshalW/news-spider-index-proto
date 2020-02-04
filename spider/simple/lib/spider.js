@@ -110,7 +110,7 @@ export default class {
                 })
 
             spider.start()
-            this.spiderCount
+            this.spiderCount++
         })
 
         logger.info({
