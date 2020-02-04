@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pkill -TERM -P `cat save_pid.txt`
+rm save_pid.txt

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkdir -p logs
+rm -f save_pid.txt
+nohup ./spider/simple/bin/simple > logs/response.log & echo $! > save_pid.txt
+

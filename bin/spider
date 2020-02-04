@@ -1,5 +1,0 @@
-#!/bin/bash
-
-mkdir -p logs
-nohup ./spider/simple/bin/simple > logs/news.log &
-

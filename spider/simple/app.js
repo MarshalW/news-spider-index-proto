@@ -1,4 +1,4 @@
-import Spider from './lib/spider.js'
+import Spider from './lib/spider-lite'
 import yaml from 'js-yaml'
 import fs from 'fs'
 

@@ -4,8 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "rm -Rf ./db && mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql && mocha -r esm",
-    "start": "rm -Rf ./db && mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql && node -r esm app",
+    "test": "mocha -r esm",
+    "start": "node -r esm app",
+    "start.backup": "rm -Rf ./db && mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql && node -r esm app",
     "sql": "mkdir -p ./db && sqlite3 ./db/history.db < ./config/db.sql"
   },
   "author": "",
