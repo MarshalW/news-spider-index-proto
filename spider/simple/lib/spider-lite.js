@@ -58,7 +58,9 @@ export default class {
             let promise = new Promise((resolve, reject) => {
                 spider.on('complete', () => {
                     logger.info({
-                        status: `A Spider finished.`
+                        status: {
+                            type: 'complete'
+                        }
                     })
                     resolve()
                 })
