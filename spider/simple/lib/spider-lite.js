@@ -1,5 +1,6 @@
 import Crawler from "simplecrawler"
-import logger from './logger.js'
+import logger from './logger'
+import errorHandler from './error-handler'
 
 const USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
 
@@ -59,41 +60,7 @@ export default class {
 
             spider.on('fetchcomplete', this.onFetchComplete.bind(this))
 
-            spider.on("fetchdataerror", function (queueItem) {
-                logger.error({
-                    error: {
-                        message: `fetchdataerror: ${queueItem.url}`
-                    }
-                })
-            })
-                .on("fetch404", function (queueItem, responseBuffer) {
-                    logger.error({
-                        error: {
-                            message: `fetch404: ${queueItem.url}`
-                        }
-                    })
-                })
-                .on("fetcherror", function (queueItem, responseBuffer) {
-                    logger.error({
-                        error: {
-                            message: `fetcherror: ${queueItem.url}`
-                        }
-                    })
-                })
-                .on("fetchtimeout", function (queueItem, timeoutVal) {
-                    logger.error({
-                        error: {
-                            message: `fetchtimeout: ${queueItem.url}`
-                        }
-                    })
-                })
-                .on("fetchredirect", function (queueItem, parsedUrl, response) {
-                    logger.info({
-                        redirect: {
-                            message: `redirect to: ${queueItem.url}`
-                        }
-                    })
-                })
+
 
             spider.start()
         })
