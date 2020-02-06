@@ -8,14 +8,14 @@ const USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) Apple
 
 export default class {
     constructor(params) {
-        let { urls, maxDepth, timeout, interval } = params
+        let { urls, maxDepth, timeout, interval, maxConcurrency } = params
         this.urls = urls
         this.maxDepth = maxDepth
         this.timeout = timeout
         this.interval = interval
+        this.maxConcurrency = maxConcurrency
     }
     onFetchComplete(queueItem, responseBuffer, response) {
-        // responseBuffer
         let { url } = queueItem
         let content = responseBuffer.toString()
 
@@ -48,6 +48,10 @@ export default class {
                 spider.interval = this.interval
             }
 
+            if (this.maxConcurrency) {
+                spider.maxConcurrency = this.maxConcurrency
+            }
+
             // spider.cache = new Crawler.cache('./cache')
 
             let promise = new Promise((resolve, reject) => {
@@ -66,10 +70,13 @@ export default class {
             cacheHandler(spider, path.join(__dirname, '../cache'))
 
             spider.start()
-        })
 
-        logger.info({
-            status: `Spider started.`
+            logger.info({
+                status: {
+                    info: 'Spider started ' + spider.initialURL,
+                    spider
+                }
+            })
         })
 
         return Promise.all(promises)

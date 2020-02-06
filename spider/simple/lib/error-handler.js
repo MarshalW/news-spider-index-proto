@@ -4,41 +4,63 @@ export default function errorHandler(spider) {
     spider.on("fetchdataerror", function (queueItem) {
         logger.error({
             error: {
-                message: `fetchdataerror: ${queueItem.url}`
+                type: 'fetchdataerror',
+                url: queueItem.url
             }
         })
     })
         .on("fetch404", function (queueItem, responseBuffer) {
             logger.error({
                 error: {
-                    message: `fetch404: ${queueItem.url}`
+                    type: 'fetch404',
+                    url: queueItem.url
                 }
             })
         })
-        .on("fetcherror", function (queueItem, responseBuffer) {
+        .on("fetch410", function (queueItem, response) {
             logger.error({
                 error: {
-                    message: `fetcherror: ${queueItem.url}`
+                    type: 'fetch410',
+                    url: queueItem.url
+                }
+            })
+        })
+        .on("fetcherror", function (queueItem, response) {
+            logger.error({
+                error: {
+                    type: 'fetcherror',
+                    url: queueItem.url
                 }
             })
         })
         .on("fetchtimeout", function (queueItem, timeoutVal) {
             logger.error({
                 error: {
-                    message: `fetchtimeout: ${queueItem.url}`
+                    type: 'fetchtimeout',
+                    url: queueItem.url
                 }
             })
         })
         .on("fetchredirect", function (queueItem, parsedUrl, response) {
             logger.info({
                 redirect: {
-                    message: `redirect to: ${queueItem.url}`
+                    url: queueItem.url
                 }
             })
         })
         .on("fetchclienterror", function (queueItem, error) {
             logger.error({
                 error: {
+                    type: 'fetchclienterror',
+                    url: queueItem.url,
+                    detail: error
+                }
+            })
+        })
+        .on("queueerror", function (error, queueItem) {
+            logger.error({
+                error: {
+                    type: 'queueerror',
                     url: queueItem.url,
                     detail: error
                 }
