@@ -6,5 +6,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$DIR/../"
 
 rm -Rf logs
-rm -Rf spider/simple/db
-rm -Rf index/simple-index/index-data
+rm -Rf spider/simple/cache
+# rm -Rf spider/simple/db
+# rm -Rf index/simple-index/index-data
