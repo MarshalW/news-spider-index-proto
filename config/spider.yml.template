@@ -1,3 +1,7 @@
 urls:
   - http://news.my.com # 一个新闻入口
-maxDepth: 5 # 爬虫最大深度
+maxDepth: 4 # 爬虫最大深度
+timeout: !!int 60000 #超时
+interval: !!int 1000 #请求间隔
+maxConcurrency: 1 #同时的请求数
+respectRobotsTxt: false

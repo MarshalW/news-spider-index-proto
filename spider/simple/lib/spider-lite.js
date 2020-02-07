@@ -10,12 +10,13 @@ const USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) Apple
 
 export default class {
     constructor(params) {
-        let { urls, maxDepth, timeout, interval, maxConcurrency } = params
+        let { urls, maxDepth, timeout, interval, maxConcurrency, respectRobotsTxt } = params
         this.urls = urls
         this.maxDepth = maxDepth
         this.timeout = timeout
         this.interval = interval
         this.maxConcurrency = maxConcurrency
+        this.respectRobotsTxt = respectRobotsTxt
     }
     onFetchComplete(queueItem, responseBuffer, response) {
         let { url } = queueItem
@@ -52,6 +53,10 @@ export default class {
 
             if (this.maxConcurrency) {
                 spider.maxConcurrency = this.maxConcurrency
+            }
+
+            if (this.respectRobotsTxt != null) {
+                spider.respectRobotsTxt = this.respectRobotsTxt
             }
 
             debug(spider)

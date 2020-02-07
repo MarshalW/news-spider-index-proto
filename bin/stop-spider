@@ -1,4 +1,6 @@
 #!/bin/bash
 
-pkill -TERM -P `cat save_pid.txt`
-rm save_pid.txt
+# pkill -TERM -P `cat save_pid.txt`
+# rm save_pid.txt
+
+pgrep -f 'node -r esm app' | xargs kill -9
