@@ -3,7 +3,7 @@ const { createLogger, transports, format } = winston
 const { combine, timestamp, json } = format
 
 export default createLogger({
-    level: 'debug',
+    level: 'error',
     format: combine(
         timestamp({
             format: 'YYYY-MM-DD HH:mm:ss.SSS'

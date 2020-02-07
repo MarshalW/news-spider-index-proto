@@ -3,6 +3,7 @@ import logger from './logger'
 import errorHandler from './error-handler'
 import cacheHandler from './cache-handler'
 import exitHandler from './exit-handler'
+import debug from './spider-debug'
 import path from 'path'
 
 const USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1"
@@ -52,6 +53,8 @@ export default class {
             if (this.maxConcurrency) {
                 spider.maxConcurrency = this.maxConcurrency
             }
+
+            debug(spider)
 
             // spider.cache = new Crawler.cache('./cache')
 
