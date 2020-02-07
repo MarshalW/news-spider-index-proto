@@ -33,6 +33,13 @@ export default class {
         this.urls.forEach(url => {
             let spider = new Crawler(url)
 
+
+            spider.supportedMimeTypes = ["text/html"]
+            spider.downloadUnsupported = false
+
+            spider.parseHTMLComments = false
+            spider.parseScriptTags = false
+
             spider.userAgent = USER_AGENT
             // spider.maxConcurrency = 5
             // spider.timeout = 60 * 1000
